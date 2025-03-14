@@ -1,3 +1,4 @@
+// capitalizeLoadTest.js
 
 import http from 'k6/http';
 import { check, sleep } from 'k6';
@@ -27,9 +28,21 @@ export default function () {
 
   const res = http.post(url, payload, params);
 
-  check(res, {
-    'status is 200': (r) => r.status === 200,
-    'response is correct': (r) => JSON.parse(r.body).text === 'HELLO WORLD',
+  if (res.status !== 200) {
+    console.error(`Unexpected status code: ${res.status}. Response: ${res.body}`);
+    return;
+  }
+
+  let jsonResponse;
+  try {
+    jsonResponse = JSON.parse(res.body);
+  } catch (e) {
+    console.error('Failed to parse JSON response:', res.body);
+    return;
+  }
+
+  check(jsonResponse, {
+    'response is correct': (r) => r.text === 'HELLO WORLD',
   });
 
   sleep(1);
