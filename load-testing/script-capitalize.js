@@ -1,4 +1,3 @@
-// capitalizeLoadTest.js
 
 import http from 'k6/http';
 import { check, sleep } from 'k6';
@@ -22,7 +21,7 @@ export const options = {
 };
 
 export default function () {
-  const url = 'http://localhost:3000/capitalize';
+  const url = 'http://localhost:8080/capitalize';
   const payload = JSON.stringify({ text: 'hello world' });
   const params = { headers: { 'Content-Type': 'application/json' } };
 
