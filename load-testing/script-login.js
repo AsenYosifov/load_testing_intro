@@ -1,25 +1,26 @@
+
 import http from 'k6/http';
+import { sleep } from 'k6';
 
 export const options = {
-    // A number specifying the number of VUs to run concurrently.
-    vus: 10,
-    // A string specifying the total duration of the test run.
-    duration: '30s',
+  vus: 10,
+  duration: '30s',
 };
 
 export default function () {
-    const url = 'http://localhost:8080/login';
-    const payload = JSON.stringify({
-        email: 'aaa',
-        password: 'bbb',
-    });
+  const url = 'http://localhost:8080/capitalize';
+  const payload = JSON.stringify({ text: 'hello world' });
 
-    const params = {
-        headers: {
-            'Content-Type': 'application/json',
-        },
-    };
+  const params = {
+    headers: {
+      'Content-Type': 'application/json',
+    },
+  };
 
-    http.post(url, payload, params);
+  const res = http.post(url, payload, params);
 
+  console.log('Response status: ' + res.status);
+  console.log('Response body: ' + res.body);
+
+  sleep(1);
 }
